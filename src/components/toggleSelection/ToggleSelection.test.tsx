@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import ToggleSelection from "./ToggleSelection";
 import userEvent from "@testing-library/user-event";
-import { debug } from "console";
 
 it("renders a button for each option", () => {
 	render(
