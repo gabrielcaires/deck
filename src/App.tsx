@@ -11,7 +11,7 @@ function App() {
 					<Route path="/deck/new">
 						<NewPage />
 					</Route>
-					<Route path="/deck/:deck">
+					<Route path="/deck/:id">
 						<Details />
 					</Route>
 				</Switch>

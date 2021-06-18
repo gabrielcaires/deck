@@ -11,20 +11,22 @@ type Props = {
 	card: CardData;
 };
 
+const formatValue = (value: string) => (value.length > 1 ? value[0] : value);
 export const Card = ({ card }: Props) => {
 	if (!SYMBOLS[card.suit]) return <></>;
 	return (
-		<div className="card" title={`${card.value} ${card.suit}`}>
+		<div
+			className={`card ${card.suit}`}
+			title={`${formatValue(card.value)} ${card.suit}`}
+		>
 			<div className="header">
-				<div className="value">{card.value}</div>
+				<div className="value">{formatValue(card.value)}</div>
 				<div className="suit">{SYMBOLS[card.suit]}</div>
 			</div>
 			<div className={`${card.suit} large`}>{SYMBOLS[card.suit]}</div>
 
 			<div className="bottom">
-				<div className="value" title={card.value}>
-					{card.value}
-				</div>
+				<div className="value">{formatValue(card.value)}</div>
 				<div className={`${card.suit}`}>{SYMBOLS[card.suit]}</div>
 			</div>
 		</div>

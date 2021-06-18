@@ -19,7 +19,9 @@ const CARDS = [
 it("renders all cards", () => {
 	render(<Deck cards={CARDS} />);
 	CARDS.forEach((item) => {
-		const card = screen.getByTitle(item.value);
-		expect(card).toBeInTheDocument();
+		const card1 = screen.getByTitle("K HEARTS");
+		const card2 = screen.getByTitle("8 CLUBS");
+		expect(card1).toBeInTheDocument();
+		expect(card2).toBeInTheDocument();
 	});
 });

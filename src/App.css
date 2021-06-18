@@ -1,10 +1,16 @@
 body {
 	background-color: #15785a;
 }
-h1 {
+h1,
+h2 {
 	color: #efef5f;
 	font-size: 4rem;
 	margin-bottom: 40px;
+}
+h2 {
+	font-size: 1.3rem;
+	margin-bottom: 10px;
+	margin-top: 28px;
 }
 
 main {
@@ -78,6 +84,10 @@ button {
 	text-align: center;
 	font-size: 25px;
 	font-weight: bold;
+}
+.card.HEARTS,
+.card.SPADES {
+	color: red;
 }
 
 .card .header {

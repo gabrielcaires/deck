@@ -1,29 +1,41 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Deck from "../components/deck/Deck";
-import { listHand, CardData } from "../services/deck";
+import { listHand, CardData, listRotation } from "../services/deck";
 
 type Params = {
-	deck: string;
+	id: string;
 };
+
 const Details = () => {
-	const { deck } = useParams<Params>();
-	const [cards, setCards] = useState<CardData[]>([]);
+	const { id } = useParams<Params>();
+	const history = useHistory();
+	const [handCards, setHandCards] = useState<CardData[]>([]);
+	const [rotationCards, setRotationCard] = useState<CardData[]>([]);
+	const [hand, rotation] = id.split("::");
 
 	const loadDeck = async () => {
-		const cards = await listHand(deck);
-		setCards(cards);
-		return Promise.resolve();
+		try {
+			setHandCards(await listHand(hand));
+			setRotationCard(await listRotation(rotation));
+		} catch (e) {
+			history.push("/deck/new");
+		}
 	};
 
 	useEffect(() => {
 		loadDeck();
-	}, [deck]);
+	}, [id]);
 
 	return (
-		<div>
-			<Deck cards={cards} />
-		</div>
+		<section>
+			<h1>Deck of cards</h1>
+			<div className="deck">
+				<Deck cards={handCards} />
+				<h2>Rotation Card</h2>
+				<Deck cards={rotationCards} />
+			</div>
+		</section>
 	);
 };
 
