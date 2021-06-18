@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Route, Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import Details from "./Details";
 import * as service from "../services/deck";
 import { mocked } from "ts-jest/utils";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("../services/deck.ts");
 

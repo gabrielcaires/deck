@@ -124,3 +124,40 @@ button {
 	margin-bottom: 10px;
 	display: inline-block;
 }
+
+.sort {
+	align-self: center;
+	text-align: center;
+	color: #fff;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.sort h2 {
+	color: #fff;
+}
+
+.sort ul > li {
+	flex: 1;
+	display: inline;
+}
+
+.sort ul > li button {
+	flex: 1;
+	display: inline;
+	border: solid 1px #fff;
+}
+
+.sort ul > li:first-child button {
+	border-radius: 0;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.sort ul > li > button:disabled {
+	background-color: #04a865;
+	cursor: not-allowed;
+	border: none;
+}

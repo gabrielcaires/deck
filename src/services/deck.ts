@@ -69,3 +69,37 @@ export const createDeck = async (
 
 	return [hand.deck_id, rotation.deck_id];
 };
+
+const original = [
+	"2",
+	"ACE",
+	"KING",
+	"QUEEN",
+	"JACK",
+	"10",
+	"9",
+	"8",
+	"7",
+	"6",
+	"5",
+	"4",
+	"3",
+];
+
+const valueToWeigth = (value: string, rotation: string = "") => {
+	const index = original.indexOf(rotation);
+	const after = original.slice(index);
+	const before = original.slice(0, index);
+	return [...after, ...before].indexOf(value);
+};
+
+export const sortByRotation = (
+	cards: CardData[],
+	rotation: CardData,
+): CardData[] => {
+	return [...cards].sort(
+		(A, B) =>
+			valueToWeigth(A.value, rotation.value) -
+			valueToWeigth(B.value, rotation.value),
+	);
+};

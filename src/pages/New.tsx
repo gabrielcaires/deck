@@ -101,7 +101,7 @@ const NewPage = ({ maximum = 10 }: Props) => {
 						id="card"
 						name="card"
 						value={code}
-						maxLength={2}
+						maxLength={3}
 						placeholder="Card name"
 						onChange={(e) => changeCode(e.target.value)}
 					/>
