@@ -14,14 +14,19 @@ type Props = {
 export const Card = ({ card }: Props) => {
 	if (!SYMBOLS[card.suit]) return <></>;
 	return (
-		<div className="card">
-			<span className={card.suit} title={card.suit}>
-				{SYMBOLS[card.suit]}
-			</span>
+		<div className="card" title={`${card.value} ${card.suit}`}>
+			<div className="header">
+				<div className="value">{card.value}</div>
+				<div className="suit">{SYMBOLS[card.suit]}</div>
+			</div>
+			<div className={`${card.suit} large`}>{SYMBOLS[card.suit]}</div>
 
-			<span className="value" title={card.value}>
-				{card.value}
-			</span>
+			<div className="bottom">
+				<div className="value" title={card.value}>
+					{card.value}
+				</div>
+				<div className={`${card.suit}`}>{SYMBOLS[card.suit]}</div>
+			</div>
 		</div>
 	);
 };

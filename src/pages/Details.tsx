@@ -1,30 +1,28 @@
-// import { useEffect } from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { get, CardData } from "../services/deck";
+import Deck from "../components/deck/Deck";
+import { listHand, CardData } from "../services/deck";
 
 type Params = {
 	deck: string;
 };
 const Details = () => {
 	const { deck } = useParams<Params>();
+	const [cards, setCards] = useState<CardData[]>([]);
 
-	async function loadDeck() {
-		const response = await get(deck);
-		console.log(response);
-		// setCards(response.data);
+	const loadDeck = async () => {
+		const cards = await listHand(deck);
+		setCards(cards);
 		return Promise.resolve();
-	}
+	};
 
 	useEffect(() => {
-		(async function anyNameFunction() {
-			await loadDeck();
-		})();
+		loadDeck();
 	}, [deck]);
 
 	return (
 		<div>
-			<h1>{deck}</h1>
+			<Deck cards={cards} />
 		</div>
 	);
 };

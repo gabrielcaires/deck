@@ -6,9 +6,9 @@ type DeckProps = {
 };
 
 const Deck = ({ cards }: DeckProps) => (
-	<div className="deck">
-		{cards.map((card) => (
-			<Card card={card} key={card.code}></Card>
+	<div className="card-list">
+		{cards.map((card, index) => (
+			<Card card={card} key={index}></Card>
 		))}
 	</div>
 );
