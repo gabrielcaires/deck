@@ -6,7 +6,7 @@ import Details from "./pages/Details";
 function App() {
 	return (
 		<Router>
-			<section>
+			<main>
 				<Switch>
 					<Route path="/deck/new">
 						<NewPage />
@@ -15,7 +15,7 @@ function App() {
 						<Details />
 					</Route>
 				</Switch>
-			</section>
+			</main>
 		</Router>
 	);
 }

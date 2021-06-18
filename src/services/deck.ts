@@ -53,7 +53,19 @@ const store = async (
 	return addToPile(deck_id, pile, codes);
 };
 
-export const storeCards = (cards: CardData[]) => store(cards, HAND);
-export const storeRotation = (card: CardData) => store([card], ROTATION);
+const storeCards = (cards: CardData[]) => store(cards, HAND);
+const storeRotation = (card: CardData) => store([card], ROTATION);
+
 export const listHand = async (deck: string) => listPile(deck, HAND);
 export const listRotation = async (deck: string) => listPile(deck, ROTATION);
+export const createDeck = async (
+	cards: CardData[],
+	rotationCard: CardData,
+): Promise<[string, string]> => {
+	const [hand, rotation] = await Promise.all([
+		storeCards(cards),
+		storeRotation(rotationCard),
+	]);
+
+	return [hand.deck_id, rotation.deck_id];
+};

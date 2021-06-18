@@ -1,4 +1,4 @@
-import { listHand, listRotation, storeCards, storeRotation } from "./deck";
+import { createDeck, listHand, listRotation } from "./deck";
 import nock from "nock";
 
 describe("service: deck", () => {
@@ -7,27 +7,6 @@ describe("service: deck", () => {
 	});
 
 	const cards = [{ code: "some-code", value: "1c", suit: "kings" }];
-
-	it("stores a deck", () => {
-		nock("https://deckofcardsapi.com")
-			.get("/api/deck/new/")
-			.query({ cards: cards[0].code })
-			.reply(200, { deck_id: "some-deck-id" });
-
-		nock("https://deckofcardsapi.com")
-			.get("/api/deck/some-deck-id/draw/")
-			.query({ count: cards.length })
-			.reply(200, { deck_id: "some-deck-id" });
-
-		nock("https://deckofcardsapi.com")
-			.get("/api/deck/some-deck-id/pile/hand/add/")
-			.query({ cards: cards[0].code })
-			.reply(200, { deck_id: "some-deck-id" });
-
-		return expect(storeCards(cards)).resolves.toEqual({
-			deck_id: "some-deck-id",
-		});
-	});
 
 	it("list the hand pile", () => {
 		nock("https://deckofcardsapi.com")
@@ -92,12 +71,27 @@ describe("service: deck", () => {
 		]);
 	});
 
-	it("set the rotation card", () => {
+	it("store the rotation and card list", () => {
 		const rotation = cards[0];
 
 		nock("https://deckofcardsapi.com")
 			.get("/api/deck/new/")
 			.query({ cards: cards[0].code })
+			.reply(200, { deck_id: "some-deck-id" });
+
+		nock("https://deckofcardsapi.com")
+			.get("/api/deck/some-deck-id/draw/")
+			.query({ count: cards.length })
+			.reply(200, { deck_id: "some-deck-id" });
+
+		nock("https://deckofcardsapi.com")
+			.get("/api/deck/some-deck-id/pile/hand/add/")
+			.query({ cards: cards[0].code })
+			.reply(200, { deck_id: "some-deck-id" });
+
+		nock("https://deckofcardsapi.com")
+			.get("/api/deck/new/")
+			.query({ cards: rotation.code })
 			.reply(200, { deck_id: "some-rotation-id" });
 
 		nock("https://deckofcardsapi.com")
@@ -107,11 +101,12 @@ describe("service: deck", () => {
 
 		nock("https://deckofcardsapi.com")
 			.get("/api/deck/some-rotation-id/pile/rotation/add/")
-			.query({ cards: cards[0].code })
+			.query({ cards: rotation.code })
 			.reply(200, { deck_id: "some-rotation-id" });
 
-		return expect(storeRotation(rotation)).resolves.toEqual({
-			deck_id: "some-rotation-id",
-		});
+		return expect(createDeck(cards, rotation)).resolves.toEqual([
+			"some-deck-id",
+			"some-rotation-id",
+		]);
 	});
 });

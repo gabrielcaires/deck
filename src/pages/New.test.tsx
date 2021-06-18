@@ -22,6 +22,11 @@ const addCard = (card: string) => {
 	userEvent.click(screen.getByRole("button", { name: "Add" }));
 };
 
+const addRotationCard = (card: string) => {
+	userEvent.type(screen.getByLabelText("Rotation Card"), card);
+	userEvent.click(screen.getByRole("button", { name: "Add" }));
+};
+
 it("adds a new card", async () => {
 	render(<New />);
 	addCard("3s");
@@ -51,27 +56,47 @@ it("prevents to add more than the maximum amount of cards", async () => {
 	expect(errorMessage).toBeInTheDocument();
 });
 
-it("store the cards", () => {
-	mockedService.storeCards.mockResolvedValue({ deck_id: "some-deck-id" });
+it("store the cards and rotation", () => {
+	mockedService.createDeck.mockResolvedValue(["hand-id", "rotation-id"]);
+
 	render(<New />);
 	addCard("3s");
+	addRotationCard("2s");
 	userEvent.click(screen.getByText("Submit Deck"));
-	expect(mockedService.storeCards).toHaveBeenCalledWith([
+
+	expect(mockedService.createDeck).toHaveBeenCalledWith(
+		[{ code: "3S", suit: "SPADES", value: "3" }],
 		{
-			code: "3S",
+			code: "2s",
 			suit: "SPADES",
-			value: "3",
+			value: "2",
 		},
-	]);
+	);
+});
+
+it("displays error message when the storing process fail", async () => {
+	mockedService.createDeck.mockRejectedValue(new Error("Some Error"));
+
+	render(<New />);
+	addCard("3s");
+	addRotationCard("4s");
+	userEvent.click(screen.getByText("Submit Deck"));
+
+	const errorMessage = await screen.findByText(
+		"Sorry, was not possible to create the deck.",
+	);
+	expect(errorMessage).toBeInTheDocument();
 });
 
 it("redirects to hand page", async () => {
-	mockedService.storeCards.mockResolvedValue({ deck_id: "some-deck-id" });
+	mockedService.createDeck.mockResolvedValue(["hand-id", "rotation-id"]);
+
 	render(<New />);
 	addCard("3s");
+	addRotationCard("2s");
 	userEvent.click(screen.getByText("Submit Deck"));
 
 	await waitFor(() =>
-		expect(mockHistoryPush).toHaveBeenCalledWith("/deck/some-deck-id"),
+		expect(mockHistoryPush).toHaveBeenCalledWith("/deck/hand-id::rotation-id"),
 	);
 });
