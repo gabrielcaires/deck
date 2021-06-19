@@ -65,9 +65,15 @@ it("store the cards and rotation", () => {
 	userEvent.click(screen.getByText("Submit Deck"));
 
 	expect(mockedService.createDeck).toHaveBeenCalledWith(
-		[{ code: "3S", suit: "SPADES", value: "3" }],
+		[
+			{
+				code: "3S",
+				suit: "SPADES",
+				value: "3",
+			},
+		],
 		{
-			code: "2s",
+			code: "2S",
 			suit: "SPADES",
 			value: "2",
 		},

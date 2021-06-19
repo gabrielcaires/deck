@@ -16,7 +16,7 @@ const VALID_PREFIX = [
 	"K",
 	"Q",
 	"J",
-	"10",
+	"0",
 	"9",
 	"8",
 	"7",
@@ -27,9 +27,9 @@ const VALID_PREFIX = [
 ];
 
 const isValid = (code: string) => {
-	if (code.length !== 2) return false;
-	const [value] = code.split("");
-	if (!VALID_PREFIX.includes(value)) return false;
+	if (code.length < 2 || code.length > 3) return false;
+	const value = code.slice(0, -1);
+	if (!VALID_PREFIX.includes(value.toUpperCase())) return false;
 
 	return true;
 };
@@ -38,11 +38,12 @@ const getSuit = (suffix: string): string => {
 };
 
 const parse = (code: string): CardData => {
-	const [value, suffix] = code.split("");
+	const value = code.slice(0, -1);
+	const suffix = code[code.length - 1];
 	return {
 		code: code,
 		suit: getSuit(suffix),
-		value: value,
+		value: value === "0" ? "10" : value,
 	};
 };
 
@@ -114,12 +115,12 @@ const NewPage = ({ maximum = 10 }: Props) => {
 				<label htmlFor="rotation-card">Rotation Card</label>
 				<input
 					type="text"
-					maxLength={2}
+					maxLength={3}
 					value={rotationCode}
 					name="rotation-card"
 					id="rotation-card"
 					placeholder="Card name"
-					onChange={(e) => setRotationCode(e.target.value)}
+					onChange={(e) => setRotationCode(e.target.value.toUpperCase())}
 				></input>
 				<button className="submit" onClick={create}>
 					Submit Deck

@@ -11,7 +11,10 @@ type Props = {
 	card: CardData;
 };
 
-const formatValue = (value: string) => (value.length > 1 ? value[0] : value);
+const formatValue = (value: string) => {
+	if (!isNaN(parseInt(value))) return value;
+	return value.length > 1 ? value[0] : value;
+};
 export const Card = ({ card }: Props) => {
 	if (!SYMBOLS[card.suit]) return <></>;
 	return (
